@@ -8,7 +8,7 @@ const cellSize = 10;  // Define a constant cell size for calculation
 
 function createWindow() {
     mainWindow = new BrowserWindow({
-        width: 200,
+        width: 250,
         height: 300,
         webPreferences: {
             nodeIntegration: true,
@@ -20,10 +20,11 @@ function createWindow() {
     mainWindow.loadFile('index.html');
 }
 
-function createGameWindow(gridSize) {
+function createGameWindow(gridSize, parent) {
     gameWindow = new BrowserWindow({
         width: Math.max(gridSize.width * cellSize + 100, 350),
         height: gridSize.height * cellSize + 150,
+        parent: parent ? parent : null,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
             nodeIntegration: true,
@@ -48,5 +49,5 @@ app.on('activate', () => {
 });
 
 ipcMain.on('open-game', (event, gridSize) => {
-    createGameWindow(gridSize);
+    createGameWindow(gridSize, mainWindow);
 });
